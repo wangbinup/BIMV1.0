@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>泛华BIM v1.0 Beta - 需求交底演示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .info-panel {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: fadeInUp 1s ease;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .info-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .progress-section {
+            margin: 40px 0;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 50px;
+            display: flex;
+            align-items: center;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            width: 45%;
+            position: relative;
+        }
+
+        .timeline-date {
+            background: #667eea;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .priority-high { border-left: 4px solid #e74c3c; }
+        .priority-medium { border-left: 4px solid #f39c12; }
+        .priority-low { border-left: 4px solid #27ae60; }
+
+        .priority-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .priority-high .priority-badge {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .priority-medium .priority-badge {
+            background: #f39c12;
+            color: white;
+        }
+
+        .priority-low .priority-badge {
+            background: #27ae60;
+            color: white;
+        }
+
+        .module-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-bottom: 15px;
+        }
+
+        .feature-list li {
+            padding: 5px 0;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .tech-specs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .spec-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .spec-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        .risk-matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .risk-item {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #f39c12;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .timeline::before {
+                left: 20px;
+            }
+            
+            .timeline-item {
+                flex-direction: column !important;
+                align-items: flex-start;
+                padding-left: 50px;
+            }
+            
+            .timeline-content {
+                width: 100%;
+            }
+            
+            .timeline-date {
+                left: 20px;
+                transform: none;
+            }
+        }
+
+        .nav-menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .nav-menu a {
+            display: block;
+            color: #667eea;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            background: #667eea;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-menu">
+        <a href="#overview">项目概述</a>
+        <a href="#schedule">开发计划</a>
+        <a href="#modules">功能模块</a>
+        <a href="#risks">风险控制</a>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>泛华BIM v1.0 Beta</h1>
+            <div class="subtitle">需求交底演示 | 2024年6月9日</div>
+        </div>
+
+        <section id="overview" class="info-panel animate-on-scroll">
+            <h2 class="section-title">项目概述</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>项目名称</h3>
+                    <p>泛华BIM v1.0 Beta版本</p>
+                </div>
+                <div class="info-card">
+                    <h3>产品经理</h3>
+                    <p>王彬</p>
+                </div>
+                <div class="info-card">
+                    <h3>开发周期</h3>
+                    <p>6月9日 - 6月23日 (15天)</p>
+                </div>
+                <div class="info-card">
+                    <h3>项目目标</h3>
+                    <p>内外部演示版本开发</p>
+                </div>
+            </div>
+            
+            <div class="tech-specs">
+                <div class="spec-card">
+                    <div class="spec-icon">🎯</div>
+                    <h3>目标用户</h3>
+                    <p>建筑设计师<br>结构工程师<br>施工人员</p>
+                </div>
+                <div class="spec-card">
+                    <div class="spec-icon">💻</div>
+                    <h3>技术架构</h3>
+                    <p>C++ / C#<br>OpenGL / DirectX<br>IFC标准兼容</p>
+                </div>
+                <div class="spec-card">
+                    <div class="spec-icon">⚡</div>
+                    <h3>性能目标</h3>
+                    <p>启动时间 < 10秒<br>内存占用 < 2GB<br>响应时间 < 200ms</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="schedule" class="info-panel animate-on-scroll">
+            <h2 class="section-title">开发计划</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">6.9</div>
+                    <div class="timeline-content">
+                        <h3>需求交底</h3>
+                        <p>需求澄清、技术方案确认</p>
+                        <small>负责团队：全体</small>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">6.9-6.11</div>
+                    <div class="timeline-content">
+                        <h3>架构搭建</h3>
+                        <p>基础框架、核心类库</p>
+                        <small>负责团队：基础架构组</small>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">6.12-6.19</div>
+                    <div class="timeline-content">
+                        <h3>核心功能开发</h3>
+                        <p>轴网、墙、梁、柱开发</p>
+                        <small>负责团队：各功能组</small>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">6.20-6.22</div>
+                    <div class="timeline-content">
+                        <h3>功能集成测试</h3>
+                        <p>模块集成、功能测试</p>
+                        <small>负责团队：测试组</small>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">6.23</div>
+                    <div class="timeline-content">
+                        <h3>演示准备</h3>
+                        <p>演示数据、PPT准备</p>
+                        <small>负责团队：产品组</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="modules" class="info-panel animate-on-scroll">
+            <h2 class="section-title">功能模块</h2>
+            <div class="modules-grid">
+                
+                <div class="module-card priority-high">
+                    <div class="priority-badge">高优先级</div>
+                    <h3 class="module-title">全局设置模块</h3>
+                    <ul class="feature-list">
+                        <li>项目参数设置</li>
+                        <li>用户界面配置</li>
+                        <li>系统性能设置</li>
+                    </ul>
+                    <p><strong>负责团队：</strong>基础架构组</p>
+                </div>
+
+                <div class="module-card priority-high">
+                    <div class="priority-badge">高优先级</div>
+                    <h3 class="module-title">轴网模块</h3>
+                    <ul class="feature-list">
+                        <li>直线轴网创建</li>
+                        <li>弧形轴网创建</li>
+                        <li>轴网编辑功能</li>
+                        <li>轴网标注命名</li>
+                    </ul>
+                    <p><strong>负责团队：</strong>基础建模组</p>
+                </div>
+
+                <div class="module-card priority-high">
+                    <div class="priority-badge">高优先级</div>
+                    <h3 class="module-title">墙体模块</h3>
+                    <ul class="feature-list">
+                        <li>直墙/弧形墙创建</li>
+                        <li>墙体参数设置</li>
+                        <li>墙体连接处理</li>
+                        <li>开洞预留功能</li>
+                    </ul>
+                    <p><strong>负责团队：</strong>建筑构件组</p>
+                </div>
+
+                <div class="module-card priority-high">
+                    <div class="priority-badge">高优先级</div>
+                    <h3 class="module-title">梁模块</h3>
+                    <ul class="feature-list">
+                        <li>框架梁创建</li>
+                        <li>梁截面参数设置</li>
+                        <li>梁标高设置</li>
+                        <li>梁柱连接处理</li>
+                    </ul>
+                    <p><strong>负责团队：</strong>结构构件组</p>
+                </div>
+
+                <div class="module-card priority-high">
+                    <div class="priority-badge">高优先级</div>
+                    <h3 class="module-title">柱模块</h3>
+                    <ul class="feature-list">
+                        <li>结构柱创建</li>
+                        <li>柱截面参数设置</li>
+                        <li>柱高度标高控制</li>
+                        <li>与梁板连接</li>
+                    </ul>
+                    <p><strong>负责团队：</strong>结构构件组</p>
+                </div>
+
+                <div class="module-card priority-medium">
+                    <div class="priority-badge">中优先级</div>
+                    <h3 class="module-title">板模块</h3>
+                    <ul class="feature-list">
+                        <li>楼板创建</li>
+                        <li>板厚度标高设置</li>
+                        <li>板开洞功能</li>
+                        <li>坡度板创建</li>
+                    </ul>
+                    <p><strong>负责团队：</strong>结构构件组</p>
+                </div>
+
+                <div class="module-card priority-medium">
+                    <div class="priority-badge">中优先级</div>
+                    <h3 class="module-title">门窗模块</h3>
+                    <ul class="feature-list">
+                        <li>门窗族库管理</li>
+                        <li>墙体中插入</li>
+                        <li>参数调整</li>
+                        <li>开启方式设置</li>
+                    </ul>
+                    <p><strong>负责团队：</strong>建筑构件组</p>
+                </div>
+
+                <div class="module-card priority-medium">
+                    <div class="priority-badge">中优先级</div>
+                    <h3 class="module-title">标注模块</h3>
+                    <ul class="feature-list">
+                        <li>线性标注</li>
+                        <li>径向标注</li>
+                        <li>文字标注引线</li>
+                        <li>标注样式设置</li>
+                    </ul>
+                    <p><strong>负责团队：</strong>图纸输出组</p>
+                </div>
+
+                <div class="module-card priority-low">
+                    <div class="priority-badge">低优先级</div>
+                    <h3 class="module-title">屋顶模块</h3>
+                    <ul class="feature-list">
+                        <li>平屋顶创建</li>
+                        <li>坡屋顶创建</li>
+                        <li>屋顶材质设置</li>
+                        <li>排水设计</li>
+                    </ul>
+                    <p><strong>负责团队：</strong>建筑构件组</p>
+                </div>
+
+                <div class="module-card priority-low">
+                    <div class="priority-badge">低优先级</div>
+                    <h3 class="module-title">楼梯模块</h3>
+                    <ul class="feature-list">
+                        <li>直跑楼梯创建</li>
+                        <li>L形/U形楼梯</li>
+                        <li>参数设置</li>
+                        <li>楼梯间设计</li>
+                    </ul>
+                    <p><strong>负责团队：</strong>建筑构件组</p>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="risks" class="info-panel animate-on-scroll">
+            <h2 class="section-title">风险控制</h2>
+            
+            <h3 style="margin-bottom: 20px; color: #e74c3c;">技术风险</h3>
+            <div class="risk-matrix">
+                <div class="risk-item">
+                    <h4>图形渲染性能</h4>
+                    <p><strong>概率：</strong>中 | <strong>影响：</strong>高</p>
+                    <p><strong>应对：</strong>提前技术验证，备选方案</p>
+                </div>
+                <div class="risk-item">
+                    <h4>数据格式兼容</h4>
+                    <p><strong>概率：</strong>低 | <strong>影响：</strong>中</p>
+                    <p><strong>应对：</strong>参考行业标准，逐步迭代</p>
+                </div>
+                <div class="risk-item">
+                    <h4>界面响应速度</h4>
+                    <p><strong>概率：</strong>中 | <strong>影响：</strong>中</p>
+                    <p><strong>应对：</strong>性能监控，及时优化</p>
+                </div>
+            </div>
+
+            <h3 style="margin: 30px 0 20px 0; color: #f39c12;">进度风险</h3>
+            <div class="risk-matrix">
+                <div class="risk-item">
+                    <h4>需求变更</h4>
+                    <p><strong>概率：</strong>中 | <strong>影响：</strong>高</p>
+                    <p><strong>应对：</strong>锁定核心需求，次要功能延后</p>
+                </div>
+                <div class="risk-item">
+                    <h4>人员缺位</h4>
+                    <p><strong>概率：</strong>低 | <strong>影响：</strong>高</p>
+                    <p><strong>应对：</strong>交叉培训，备用人员</p>
+                </div>
+                <div class="risk-item">
+                    <h4>技术难点</h4>
+                    <p><strong>概率：</strong>中 | <strong>影响：</strong>中</p>
+                    <p><strong>应对：</strong>提前预研，专家支持</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="info-panel animate-on-scroll">
+            <h2 class="section-title">验收标准</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>功能验收</h3>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li>✓ 所有高优先级功能完成</li>
+                        <li>✓ 核心用例场景测试通过</li>
+                        <li>✓ 演示流程顺畅完整</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>质量验收</h3>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li>✓ 无严重bug</li>
+                        <li>✓ 性能指标达标</li>
+                        <li>✓ 用户体验良好</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>交付验收</h3>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li>✓ 安装包可正常部署</li>
+                        <li>✓ 演示环境稳定</li>
+                        <li>✓ 文档齐全</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // 滚动动画
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.animate-on-scroll');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', animateOnScroll);
+        animateOnScroll(); // 初始检查
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // 模块卡片点击效果
+        document.querySelectorAll('.module-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+    </script>
+</body>
+</html> 
